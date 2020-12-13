@@ -1,0 +1,78 @@
+﻿@using ToDoProject.Models.ViewModels
+@model EmployeeViewModel
+@addTagHelper *, ToDoProject
+@addTagHelper *, PageLinkTagHelpers
+
+@{
+    ViewData["Title"] = "List of Employees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewData["Title"]</h2>
+<p>
+    <a asp-controller="Employee" asp-action="Create" class="btn btn-outline-secondary">Add employee</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div class="form-row">
+        @*class="form-actions no-color"*@
+        <div class="col">
+            <input type="text" asp-for="SearchString"  class="form-control" placeholder="Search by name, position" />
+        </div>
+        <div class="col">
+            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+            <input type="submit" asp-action="Index" value="Back to Full List" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+    <p></p>
+</form>
+
+<table class="table">
+    <tr>
+        <th>Avatar</th>
+        <th>Employee name</th>
+        <th>Position</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model.Employees)
+    {
+        <tr>
+            <td>
+                @if (item.Image.Avatar != null)
+                {
+                    <img style='width:50px; height:30px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Image.Avatar))" />
+                }
+            </td>
+            <td><a asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
+            <td>@item.Position</td>
+            <td>
+                <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"> Edit </a>
+                <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@if (Model.PageViewModel.HasPreviousPage)
+    {
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+           class="btn  btn-outline-dark">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Назад
+        </a>
+    }
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+        asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+        class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
+
+@*<a class="page-link" page-model="Model.PageViewModel" page-action="Index"></a>*@
+    <div class="pagination">
+        <page-link class="page-item" page-model="Model.PageViewModel" page-action="Index"></page-link>
+    </div>

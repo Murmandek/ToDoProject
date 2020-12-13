@@ -1,0 +1,33 @@
+﻿@model ToDoProject.Models.EmployeeTaskViewModel
+@{
+    ViewData["Title"] = "Add task to employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="boxedForm">
+
+    @*@using (Html.BeginForm())
+    {*@
+        <div>
+            <label asp-for="Employees"></label>
+            <select asp-for="EmployeeSelectedValue" class="form-control  form-control-sm" asp-items="@(new SelectList(Model.Employees, "Id", "Name"))"></select>
+            <span asp-validation-for="Employee.Id" />
+        </div>
+        <p></p>
+        <div>
+            <label asp-for="Taskss"></label>
+            <select asp-for="TaskSelectedValue" class="form-control  form-control-sm" asp-items="@(new SelectList(Model.Taskss, "Id", "Name"))"></select>
+            <span asp-validation-for="Tasks.Id" />
+        </div>
+        <p></p>
+        <div class="action">
+            <button class="btn btn-outline-primary" type="submit">
+                <span>Save</span>
+            </button>
+        </div>
+        <p></p>
+        <div>
+            <a asp-controller="EmployeeTask" asp-action="Index" class="btn btn-primary">Back to main menu</a>
+        </div>
+    @*}*@
+</div>

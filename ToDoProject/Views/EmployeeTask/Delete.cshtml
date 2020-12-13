@@ -1,0 +1,37 @@
+﻿@model ToDoProject.Models.EmployeeTask
+@{
+    ViewData["Title"] = "Delete employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>
+            @Model.Employee.Name
+        </dd>
+
+        <dt>Task name</dt>
+        <dd>
+            @Model.Tasks.Name
+        </dd>
+
+        <dt>Description</dt>
+        <dd>
+            @Model.Tasks.Description
+        </dd>
+    </dl>
+
+    <div>
+        <form asp-controller="EmployeeTask" asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Delete" />
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <a asp-controller="EmployeeTask" asp-action="Index">Back to main menu</a>
+    </div>
+</div>

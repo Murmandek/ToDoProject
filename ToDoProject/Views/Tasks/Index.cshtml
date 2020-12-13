@@ -1,0 +1,68 @@
+﻿@model ToDoProject.Models.ViewModels.TasksViewModel
+@addTagHelper *, ToDoProject
+@{
+    ViewData["Title"] = "List of Tasks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-controller="Tasks" asp-action="Create" class="btn btn-outline-secondary">Add task</a>
+</p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-row">
+        <div class="col">
+            <input type="text" asp-for="SearchString" name="SearchString" class="form-control" placeholder="Search by name, discription" />
+        </div>
+        <div class="col">
+            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+            <input type="submit" asp-action="Index" value="Back to Full List" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+    <p></p>
+</form>
+
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model.Tasks)
+    {
+        <tr>
+            <td><a asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
+            <td>@item.Description</td>
+            <td>
+                <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"> Edit </a>
+                <a asp-controller="Tasks" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+
+
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       class="btn  btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
+
+<page-link page-model="Model.PageViewModel" page-action="Index"></page-link>

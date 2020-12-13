@@ -1,0 +1,42 @@
+﻿@model ToDoProject.Models.ETViewModel
+
+@{
+    ViewData["Title"] = "Add a new task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewData["Title"]</h2>
+
+
+<form asp-action="Create" asp-controller="Tasks" method="post" enctype="multipart/form-data">
+    <div>
+        <div class="form-group">
+            <label asp-for="TaskName"></label>
+            <input type="text" asp-for="TaskName" class="form-control form-control-sm" />
+            <span asp-validation-for="TaskName" />
+        </div>
+        <div class="form-group">
+            <label asp-for="TaskDescription"></label>
+            <input asp-for="TaskDescription" class="form-control  form-control-sm" />
+            <span asp-validation-for="TaskDescription" />
+        </div>
+        <div>
+            <label asp-for="Employees"></label>
+            <select asp-for="SelectedValue" class="form-control  form-control-sm" asp-items="@(new SelectList(Model.Employees, "Id", "Name"))"></select>
+            <span asp-validation-for="Employee.Id" />
+        </div>
+        <p></p>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-controller="Tasks" asp-action="Index">Back to main menu</a>
+</div>
+
+@section Scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

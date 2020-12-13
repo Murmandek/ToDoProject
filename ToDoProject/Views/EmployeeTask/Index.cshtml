@@ -1,0 +1,79 @@
+﻿@model List<ToDoProject.Models.Tasks>
+@{
+    ViewData["Title"] = "Employee task list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewData["Title"]</h2>
+<style>
+    li {
+        list-style-type: none; /* Убираем маркеры */
+        height: 30px;
+        margin-top: 5px;
+    }
+    ul {
+        margin-left: 0;  /*Отступ слева в браузере IE и Opera*/ 
+        padding-left: 0;  /*Отступ слева в браузере Firefox, Safari, Chrome*/ 
+        padding-bottom: 0;  /*Отступ снизу в браузере Firefox, Safari, Chrome */
+        margin-bottom: 0; /* Отступ снизу в браузере IE и Opera */
+    }
+    table {
+        border-collapse: collapse;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+</style>
+
+<p>
+    <a asp-controller="EmployeeTask" asp-action="Create" class="btn btn-outline-secondary">Assign task to employee</a>
+</p>
+
+
+
+<table class="table">
+    <tr>
+        <th>Task</th>
+        <th>Employee name</th>
+        <th>Task start</th>
+        <th>Actions</th>
+    </tr>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    <ul>
+                        @foreach (EmployeeTask item1 in @item.EmployeeTasks)
+                        {
+                            <li>
+                                @item1.Employee.Name
+                            </li>       
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (EmployeeTask item2 in @item.EmployeeTasks)
+                        {
+                            <li>
+                                @item2.AppointmentDate.ToShortDateString()
+                            </li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (EmployeeTask item1 in @item.EmployeeTasks)
+                        {
+                            <li>
+                                <a style='width:80px; height:30px;' asp-controller="EmployeeTask" asp-action="Delete" asp-route-employeeId="@item1.Employee.Id" asp-route-taskId="@item.Id" class="btn btn-danger">Delete</a>
+                            </li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
