@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ToDoProject.Models
@@ -7,7 +8,9 @@ namespace ToDoProject.Models
     public interface IPersonRepository
     {
         Task<bool> CreateAsync(Person people);
-        List<Person> GetPerson();
+        List<Person> GetPersons();
+
+        ClaimsIdentity GetIdentity(string username, string password);
     }
     public class PersonRepository : IPersonRepository
     {
@@ -18,11 +21,11 @@ namespace ToDoProject.Models
             _db = context;
         }
 
-        public async Task<bool> CreateAsync(Person people)
+        public async Task<bool> CreateAsync(Person person)
         {
             try
             {
-                await _db.Person.AddAsync(people);
+                await _db.Person.AddAsync(person);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -32,9 +35,28 @@ namespace ToDoProject.Models
             }
         }
 
-        public List<Person> GetPerson()
+        public List<Person> GetPersons()
         {
             return _db.Person.ToList();
+        }
+
+        public ClaimsIdentity GetIdentity(string username, string password)
+        {
+            Person person = GetPersons().FirstOrDefault(x => x.Login == username && x.Password == password);
+            if (person != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
+                };
+                ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+
+            // if user not found
+            return null;
         }
     }
 }

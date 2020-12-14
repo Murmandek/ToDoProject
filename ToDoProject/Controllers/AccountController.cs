@@ -29,27 +29,27 @@ namespace ToDoProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Person people)
+        public async Task<ActionResult> Create(Person person)
         {
             if (ModelState.IsValid)
             {
-                var result = await _repo.CreateAsync(people);
+                var result = await _repo.CreateAsync(person);
                 if (result == true)
                     return RedirectToAction("Index");
                 else
                 {
-                    ModelState.AddModelError("Login", $"Sorry, user name {people.Login} is already taken"); 
-                    return View(people);
+                    ModelState.AddModelError("Login", $"Sorry, user name {person.Login} is already taken"); 
+                    return View(person);
                 }  
             }
             else
-                return View(people);
+                return View(person);
         }
 
         [HttpPost("/token")]
         public IActionResult Token(string username, string password)
         {
-            var identity = GetIdentity(username, password);
+            var identity = _repo.GetIdentity(username, password);
             if (ModelState.IsValid)
             {
                 if (identity == null)
@@ -98,25 +98,6 @@ namespace ToDoProject.Controllers
                 ModelState.AddModelError("Login", $"Incorrect user name");
                 return Json(response);
             }
-        }
-
-        private ClaimsIdentity GetIdentity(string username, string password)
-        {
-            Person person = _repo.GetPerson().FirstOrDefault(x => x.Login == username && x.Password == password);
-            if (person != null)  
-            {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
-                };
-                ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
-            }
-
-            // if user not found
-            return null;
         }
     }
 }
