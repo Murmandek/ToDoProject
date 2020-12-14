@@ -32,11 +32,17 @@ namespace ToDoProject.Controllers
 
             EmployeeViewModel employeeViewModel = new EmployeeViewModel
             {
-                PageViewModel = new PageViewModel(count, page, pageSize),
+                PaginationViewModel = new PaginationViewModel(count, page, pageSize),
                 Employees = items,
                 SearchString = searchString
             };
-            return View("~/Views/Home/Index.cshtml", employeeViewModel);
+            return View(employeeViewModel);
+        }
+
+        public IActionResult ClearIndex()
+        {
+            string searchString = "";
+            return RedirectToAction("Index", "Employee", searchString);
         }
 
         public async Task<ActionResult> Details(int id)

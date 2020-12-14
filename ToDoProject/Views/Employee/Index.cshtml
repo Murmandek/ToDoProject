@@ -20,7 +20,7 @@
         </div>
         <div class="col">
             <input type="submit" value="Search" class="btn btn-outline-secondary" />
-            <input type="submit" asp-action="Index" value="Back to Full List" class="btn btn-outline-secondary" />
+            <input type="submit" asp-action="ClearIndex" value="Back to Full List" class="btn btn-outline-secondary" />
         </div>
     </div>
     <p></p>
@@ -53,19 +53,19 @@
     }
 </table>
 
-@if (Model.PageViewModel.HasPreviousPage)
+@if (Model.PaginationViewModel.HasPreviousPage)
     {
         <a asp-action="Index"
-           asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+           asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)"
            class="btn  btn-outline-dark">
             <i class="glyphicon glyphicon-chevron-left"></i>
             Назад
         </a>
     }
-@if (Model.PageViewModel.HasNextPage)
+@if (Model.PaginationViewModel.HasNextPage)
 {
     <a asp-action="Index"
-        asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+        asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)"
         class="btn btn-outline-dark">
         Вперед
         <i class="glyphicon glyphicon-chevron-right"></i>

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ToDoProject.Models
 {
-    public class ETViewModel
+    public class CreateTaskViewModel
     {
         [Display(Name = "Task name")]
         public string TaskName { get; set; }

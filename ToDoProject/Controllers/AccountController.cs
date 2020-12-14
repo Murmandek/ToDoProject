@@ -20,12 +20,12 @@ namespace ToDoProject.Controllers
 
         public IActionResult Index()
         {
-            return View("~/Views/Account/Authentication.cshtml");
+            return View("Authentication"); //"~/Views/Account/Authentication.cshtml"
         }
 
         public ActionResult Create()
         {
-            return View("Create");
+            return View();
         }
 
         [HttpPost]

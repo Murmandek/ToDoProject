@@ -20,7 +20,7 @@ namespace ToDoProject.Models
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
-        public PageViewModel PageModel { get; set; }
+        public PaginationViewModel PageModel { get; set; }
         public string PageAction { get; set; }
 
         [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]

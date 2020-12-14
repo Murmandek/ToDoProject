@@ -35,7 +35,7 @@ namespace ToDoProject.Controllers
                 Taskss = tasks
             };
 
-            return View("Create", etViewModel);
+            return View(etViewModel); //"Create"
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace ToDoProject.Controllers
 
             if (ModelState.IsValid) 
             {
-                await _repoTask.CreateETAsync(etViewModel.TaskSelectedValue, etViewModel.EmployeeSelectedValue);
+                await _repoTask.CreateEmployeeTaskAsync(etViewModel.TaskSelectedValue, etViewModel.EmployeeSelectedValue);
                 return RedirectToAction("Index");
             }
             else

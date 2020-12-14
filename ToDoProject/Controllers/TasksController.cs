@@ -12,7 +12,8 @@ namespace ToDoProject.Controllers
         private readonly ILogger<TasksController> _logger;
         private readonly ITaskRepository _repo;
         private readonly IEmployeeRepository _repoEmp;
-      
+        
+
         public TasksController(ILogger<TasksController> logger, ITaskRepository context, IEmployeeRepository contextEmp)
         {
             _logger = logger;
@@ -32,7 +33,7 @@ namespace ToDoProject.Controllers
 
             TasksViewModel tasksViewModel = new TasksViewModel
             {
-                PageViewModel = new PageViewModel(count, page, pageSize),
+                PaginationViewModel = new PaginationViewModel(count, page, pageSize),
                 Tasks = items,
                 SearchString = searchString
             };
@@ -40,23 +41,10 @@ namespace ToDoProject.Controllers
             return View(tasksViewModel); 
         }
 
-        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
-        public async Task<IActionResult> ClearIndex(string searchString = "", int page = 1)
+        public IActionResult ClearIndex()
         {
-            int pageSize = 3;
-            var tasks = await _repo.GetTasksAsync(searchString);
-
-            var count = tasks.Count();
-            var items = tasks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-            TasksViewModel tasksViewModel = new TasksViewModel
-            {
-                PageViewModel = new PageViewModel(count, page, pageSize),
-                Tasks = items,
-                SearchString = ""
-            };
-
-            return View("~/Views/Tasks/Index.cshtml", tasksViewModel);   
+            string searchString = "";
+            return RedirectToAction("Index", "Tasks", searchString);
         }
 
         public async Task<ActionResult> Details(int id)
@@ -75,43 +63,45 @@ namespace ToDoProject.Controllers
         /// <summary>
         /// to generate view with employees for entering task data
         /// </summary>
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
         [HttpGet]
         public async Task<ActionResult> Create()
         {
             var employees = await _repoEmp.GetAllEmployeesAsync();
 
-            var etViewModel = new ETViewModel
+            var createTaskViewModel = new CreateTaskViewModel
             {
                 Employees = employees
             };
 
-            return View("~/Views/Tasks/Create.cshtml", etViewModel);
+            return View(createTaskViewModel);
         }
 
         /// <summary>
         /// to save entered data
         /// </summary>
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
         [HttpPost]
-        public async Task<ActionResult> Create(ETViewModel etViewModel)
+        public async Task<ActionResult> Create(CreateTaskViewModel createTaskViewModel)
         {
             var employees = await _repoEmp.GetAllEmployeesAsync();
 
-            etViewModel.Employees = employees;
+            createTaskViewModel.Employees = employees;
 
             Tasks taskObj = new Tasks
             {
-                Name = etViewModel.TaskName,
-                Description = etViewModel.TaskDescription
+                Name = createTaskViewModel.TaskName,
+                Description = createTaskViewModel.TaskDescription
             };
 
             if (ModelState.IsValid)
             {
-                await _repo.CreateAsync(taskObj, etViewModel.SelectedValue);
+                await _repo.CreateAsync(taskObj, createTaskViewModel.SelectedValue);
                 return RedirectToAction("Create");
             }
             else
             {
-                return View(etViewModel);
+                return View(createTaskViewModel);
             }
         }
 

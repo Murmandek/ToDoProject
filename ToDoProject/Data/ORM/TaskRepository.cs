@@ -11,7 +11,7 @@ namespace ToDoProject.Models
     {
         Task<List<Tasks>> GetAllTasksAsync();
         Task CreateAsync(Tasks task, int employeeId);
-        Task CreateETAsync(int taskId, int employeeId);
+        Task CreateEmployeeTaskAsync(int taskId, int employeeId);
         Task DeleteAsync(int id);
         Task<Tasks> GetAsync(int id);
         Task<List<Tasks>> GetTasksAsync(string searchString);
@@ -20,7 +20,7 @@ namespace ToDoProject.Models
 
     public class TaskRepository  : ITaskRepository
     {
-        private readonly ApplicationDbContext _db; 
+        private readonly ApplicationDbContext _db;
 
         public TaskRepository(ApplicationDbContext context)
         {
@@ -83,7 +83,7 @@ namespace ToDoProject.Models
             }
         }
 
-        public async Task CreateETAsync(int taskId, int employeeId)
+        public async Task CreateEmployeeTaskAsync(int taskId, int employeeId)
         {
             int et = 0;
             et = await _db.EmployeeTask.Where(e => e.EmployeeId == employeeId && e.TaskId == taskId).CountAsync();
