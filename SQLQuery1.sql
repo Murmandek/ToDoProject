@@ -1,3 +1,5 @@
+Create database tobodb
+
 ALTER TABLE EmployeeTask
 DROP CONSTRAINT FK_EmployeeTask_Employee,
 	 CONSTRAINT FK_EmployeeTask_Tasks;
