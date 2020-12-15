@@ -1,4 +1,5 @@
 ﻿@model List<ToDoProject.Models.Tasks>
+
 @{
     ViewData["Title"] = "Employee task list";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,18 +7,14 @@
 <h2>@ViewData["Title"]</h2>
 <style>
     li {
-        list-style-type: none; /* Убираем маркеры */
+        list-style-type: none; 
     }
+
     ul {
-        margin-left: 0;  /*Отступ слева в браузере IE и Opera*/ 
-        padding-left: 0;  /*Отступ слева в браузере Firefox, Safari, Chrome*/ 
-        padding-bottom: 0;  /*Отступ снизу в браузере Firefox, Safari, Chrome */
-        margin-bottom: 0; /* Отступ снизу в браузере IE и Opera */
-    }
-    table {
-        border-collapse: collapse;
+        margin-left: 0; 
+        padding-left: 0;
         padding-bottom: 0;
-        padding-top: 0;
+        margin-bottom: 0;
     }
 </style>
 
@@ -25,7 +22,11 @@
     <a asp-controller="EmployeeTask" asp-action="Create" class="btn btn-outline-secondary">Assign task to employee</a>
 </p>
 
-
+@*table {
+        border-collapse: collapse;
+        padding-bottom: 0;
+        padding-top: 0;
+    }*@
 
 <table class="table">
     <tr>
@@ -45,9 +46,10 @@
                     <ul>
                         @foreach (EmployeeTask item1 in @item.EmployeeTasks)
                         {
-                            <li style='margin-bottom:5px; height:30px; margin-left: -38px;'>
+                            <li style='margin-bottom:5px; height:30px;'>
                                 @item1.Employee.Name
-                            </li>       
+                            </li>
+
                         }
                     </ul>
                 </td>
@@ -55,7 +57,7 @@
                     <ul>
                         @foreach (EmployeeTask item2 in @item.EmployeeTasks)
                         {
-                            <li style='margin-bottom:5px; height:30px; margin-left: -38px;'>
+                            <li style='margin-bottom:5px; height:30px;'>
                                 @item2.AppointmentDate.ToShortDateString()
                             </li>
                         }
@@ -65,9 +67,7 @@
                     <ul>
                         @foreach (EmployeeTask item1 in @item.EmployeeTasks)
                         {
-                            /* height: 30px;
-                                margin-top: 5px;*/
-                            <li style='margin-bottom:5px; height:30px; margin-left: -38px;'>
+                            <li style='margin-bottom:5px; height:30px;'>
                                 <a style='width:80px; height:30px;' asp-controller="EmployeeTask" asp-action="Delete" asp-route-employeeId="@item1.Employee.Id" asp-route-taskId="@item.Id" class="btn btn-danger">Delete</a>
                             </li>
                         }

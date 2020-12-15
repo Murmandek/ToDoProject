@@ -20,7 +20,7 @@ namespace ToDoProject.Controllers
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
         public async Task<IActionResult> Index()
         {
-            return View(await _repo.GetEmployeeTasksAsync()); 
+            return View(await _repo.GetEmployeeTasksAsync());
         }
 
         [HttpGet]
@@ -35,7 +35,7 @@ namespace ToDoProject.Controllers
                 Taskss = tasks
             };
 
-            return View(etViewModel); //"Create"
+            return View(etViewModel);
         }
         
         /// <summary>
