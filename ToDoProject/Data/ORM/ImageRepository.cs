@@ -4,16 +4,10 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ToDoProject.Data.ORM;
 
 namespace ToDoProject.Models
 {
-    public interface IImageRepository
-    {
-        Task CreateAsync(ImageViewModel imageVM);
-        Task<List<Image>> GetImagesAsync();
-        Task<Image> GetAsync(int id);
-        Task UpdateAsync(ImageViewModel newImage);
-    }
     public class ImageRepository : IImageRepository
     {
         private readonly ApplicationDbContext _db;

@@ -30,6 +30,6 @@ namespace ToDoProject.Models
             EmployeeTasks = new List<EmployeeTask>();
         }
 
-        public Image Image { get; set; }
+        public virtual Image Image { get; set; }
     }
 }

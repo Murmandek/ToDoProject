@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using ToDoProject.Data.ORM;
 using ToDoProject.Models;
 using ToDoProject.Models.ViewModels;
 
@@ -45,9 +47,10 @@ namespace ToDoProject.Controllers
             return RedirectToAction("Index", "Employee", searchString);
         }
 
-        public async Task<ActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            Employee employee = await _repo.GetAsync(id);
+            //Employee employee = await _repo.GetAsync(id);
+            Employee employee = await _repo.GetEmployeeWithImage(id);
             if (employee != null)
                 return View(employee);
             return NotFound();
@@ -64,7 +67,7 @@ namespace ToDoProject.Controllers
             if (ModelState.IsValid)
             {
                 await _repo.CreateAsync(employee, imageVM);
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = employee.Id });
             }
             else
                 return View(employee);

@@ -3,19 +3,11 @@ using System.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using ToDoProject.Data.ORM;
+using System.IO;
 
 namespace ToDoProject.Models
 {
-    public interface IEmployeeRepository
-    {
-        Task CreateAsync(Employee employee, ImageViewModel imageVM);
-        Task DeleteAsync(int id);
-        Task<Employee> GetAsync(int id);
-        Task<List<Employee>> GetAllEmployeesAsync();
-        Task<List<Employee>> GetEmployeesAsync(string searchString);
-        Task UpdateAsync(Employee employee);
-    }
-
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly ApplicationDbContext _db;
@@ -38,19 +30,26 @@ namespace ToDoProject.Models
                 return await _db.Employee.Where(e => e.Name.Contains(searchString)
                                         || e.Position.Contains(searchString))
                                         .Include(e => e.Image)
+                                        .AsNoTracking()
                                         .ToListAsync(); 
             }
             else
             {
                 return await _db.Employee
                             .Include(e => e.Image)
+                            .AsNoTracking()
                             .ToListAsync();
             }
         }
 
         public async Task<Employee> GetAsync(int id)
         {
-            return await _db.Employee.FirstOrDefaultAsync(t => t.Id == id);
+            return await _db.Employee.FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public async Task<Employee> GetEmployeeWithImage(int id)
+        {
+            return await _db.Employee.Include(e => e.Image).AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task CreateAsync(Employee employee, ImageViewModel imageVM)
@@ -58,9 +57,35 @@ namespace ToDoProject.Models
             await _db.Employee.AddAsync(employee);
             await _db.SaveChangesAsync();
 
-            var empId = await _db.Employee.OrderBy(e => e.Id).LastOrDefaultAsync();
-            imageVM.EmployeeId = empId.Id;
-            await _imageRepository.CreateAsync(imageVM);
+            var image = new Image
+            {
+                Name = imageVM.Name,
+                EmployeeId = employee.Id
+            };
+             
+            if (imageVM.Avatar != null)
+            {
+                byte[] imageData = null;
+
+                using (var binaryReader = new BinaryReader(imageVM.Avatar.OpenReadStream()))
+                {
+                    imageData = binaryReader.ReadBytes((int)imageVM.Avatar.Length);
+                }
+
+                image.Avatar = imageData;
+            }
+
+            await _db.Image.AddAsync(image);
+            await _db.SaveChangesAsync();
+
+
+
+
+            
+            /*IT'S WORKING*/
+            //   var empId = await _db.Employee.OrderBy(e => e.Id).LastOrDefaultAsync();
+          /*  imageVM.EmployeeId = employee.Id;                  //empId.Id;
+            await _imageRepository.CreateAsync(imageVM);*/
         }
 
         public async Task UpdateAsync(Employee newEmployee)

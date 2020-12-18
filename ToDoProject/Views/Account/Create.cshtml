@@ -4,6 +4,13 @@
     ViewData["Title"] = "A new user";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
+@*<style>
+    span {
+        color: red; /* Цвет текста */
+    }
+</style>*@
+
 <h2>@ViewData["Title"]</h2>
 
 <form asp-action="Create" asp-controller="Account" method="post" asp-antiforgery="true">

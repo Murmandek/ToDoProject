@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using ToDoProject.Data.ORM;
 
 namespace ToDoProject.Models
 {
-    public interface IEmployeeTaskRepository
-    {
-        Task<List<Tasks>> GetEmployeeTasksAsync();
-        Task DeleteAsync(int employeeId, int taskId);
-        Task<EmployeeTask> GetAsync(int employeeId, int taskId);
-    }
     public class EmployeeTaskRepository : IEmployeeTaskRepository
     {
         private readonly ApplicationDbContext _db;

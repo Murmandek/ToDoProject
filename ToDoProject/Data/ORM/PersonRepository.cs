@@ -2,16 +2,10 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ToDoProject.Data.ORM;
 
 namespace ToDoProject.Models
 {
-    public interface IPersonRepository
-    {
-        Task<bool> CreateAsync(Person people);
-        List<Person> GetPersons();
-
-        ClaimsIdentity GetIdentity(string username, string password);
-    }
     public class PersonRepository : IPersonRepository
     {
         private readonly ApplicationDbContext _db;
