@@ -11,7 +11,7 @@ namespace ToDoProject.Data.ORM
         Task<Employee> GetAsync(int id);
         Task<List<Employee>> GetAllEmployeesAsync();
         Task<List<Employee>> GetEmployeesAsync(string searchString);
-        Task UpdateAsync(Employee employee);
+        Task UpdateAsync(Employee employee, ImageViewModel image);
         Task<Employee> GetEmployeeWithImage(int id);
     }
 }

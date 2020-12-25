@@ -45,24 +45,38 @@
     }
 </table>
 
-
-@if (Model.PaginationViewModel.HasPreviousPage)
-{
-    <a asp-action="Index"
-       asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)"
-       class="btn  btn-outline-dark">
-        <i class="glyphicon glyphicon-chevron-left"></i>
-        Назад
-    </a>
-}
-@if (Model.PaginationViewModel.HasNextPage)
-{
-    <a asp-action="Index"
-       asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)"
-       class="btn btn-outline-dark">
-        Вперед
-        <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
-}
-
-<page-link page-model="Model.PageViewModel" page-action="Index"></page-link>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (Model.PaginationViewModel.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)" class="page-link">
+                    Previous
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber - 1)
+                </a>
+            </li>
+        }
+        @if (Model.PaginationViewModel.HasNextPage)
+        {
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber)
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber + 1)
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)" class="page-link">
+                    Next
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

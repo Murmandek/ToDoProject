@@ -9,13 +9,9 @@
 }
 
 <style>
-/*    img {
-        border: 1px solid #ccc;
-    }*/
-
     .edge {
-        /*  image-rendering: -moz-crisp-edges;  Firefox 
-        -ms-interpolation-mode: nearest-neighbor;  IE 
+        /*  image-rendering: -moz-crisp-edges;  Firefox
+        -ms-interpolation-mode: nearest-neighbor;  IE
         image-rendering: crisp-edges;  Стандартное свойство */
         /*height: 50px;
         width: auto;*/
@@ -24,7 +20,8 @@
         width: 50px;
         height: 50px;
         /*object-fit: contain;*/
-        border-radius: 25px;
+        border-radius: 25px; /*50%*/
+        overflow: hidden;
         /* height: 50px;*/
     }
 </style>
@@ -32,17 +29,17 @@
 
 <h2>@ViewData["Title"]</h2>
 <p>
-    <a asp-controller="Employee" asp-action="Create" class="btn btn-outline-secondary">Add employee</a>
+    <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Add employee</a> @*btn btn-outline-secondary*@
 </p>
 
 <form asp-action="Index" method="get">
     <div class="form-row">
         @*class="form-actions no-color"*@
         <div class="col">
-            <input type="text" asp-for="SearchString"  class="form-control" placeholder="Search by name, position" />
+            <input type="text" asp-for="SearchString" class="form-control" placeholder="Search by name, position" />
         </div>
         <div class="col">
-            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+            <input type="submit" value="Search" class="btn btn-outline-success my-2 my-sm-0" />   @*btn btn-outline-secondary*@
             <input type="submit" asp-action="ClearIndex" value="Back to Full List" class="btn btn-outline-secondary" />
         </div>
     </div>
@@ -70,33 +67,47 @@
             <td><a asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
             <td>@item.Position</td>
             <td>
-                <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"> Edit </a>
+                <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary"> Edit </a>
                 <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     }
 </table>
 
-@if (Model.PaginationViewModel.HasPreviousPage)
-    {
-        <a asp-action="Index"
-           asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)"
-           class="btn  btn-outline-dark">
-            <i class="glyphicon glyphicon-chevron-left"></i>
-            Назад
-        </a>
-    }
-@if (Model.PaginationViewModel.HasNextPage)
-{
-    <a asp-action="Index"
-        asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)"
-        class="btn btn-outline-dark">
-        Вперед
-        <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
-}
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (Model.PaginationViewModel.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)" class="page-link">
+                    Previous
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber - 1)
+                </a>
+            </li>
+        }
+        @if (Model.PaginationViewModel.HasNextPage)
+        {
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber)
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber + 1)
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)" class="page-link">
+                    Next
+                </a>
+            </li>
+        }
 
-@*<a class="page-link" page-model="Model.PageViewModel" page-action="Index"></a>*@
-    <div class="pagination">
-        <page-link class="page-item" page-model="Model.PageViewModel" page-action="Index"></page-link>
-    </div>
+    </ul>
+</nav>
+

@@ -63,7 +63,7 @@ namespace ToDoProject.Models
             modelBuilder.ApplyConfiguration(new EmployeeMapping());
 
             modelBuilder.Entity<EmployeeTask>()
-             .HasKey(t => new { t.EmployeeId, t.TaskId });
+                .HasKey(t => new { t.EmployeeId, t.TaskId });
 
             modelBuilder.Entity<EmployeeTask>()
                 .HasOne(sc => sc.Employee)
@@ -78,6 +78,12 @@ namespace ToDoProject.Models
             modelBuilder.Entity<Tasks>()
                 .HasIndex(t => t.Name)
                 .IsUnique();
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Image)
+                .WithOne(i => i.Employee)
+                .HasForeignKey<Image>(e => e.EmployeeId)
+                .IsRequired();
         }
 
         public override void Dispose()

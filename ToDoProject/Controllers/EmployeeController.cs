@@ -90,8 +90,8 @@ namespace ToDoProject.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(Employee employee, ImageViewModel image)
         {
-            await _repo.UpdateAsync(employee);
-            await _repoImage.UpdateAsync(image);
+            await _repo.UpdateAsync(employee, image);
+         //   await _repoImage.UpdateAsync(image);
             return RedirectToAction("Index");
         }
 
