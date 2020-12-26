@@ -99,7 +99,7 @@ namespace ToDoProject.Controllers
         [ActionName("Delete")]
         public async Task<ActionResult> ConfirmDelete(int id)
         {
-            Employee employee = await _repo.GetAsync(id);
+            Employee employee = await _repo.GetEmployeeWithImage(id);
             if (employee != null)
                 return View(employee);
             return NotFound();

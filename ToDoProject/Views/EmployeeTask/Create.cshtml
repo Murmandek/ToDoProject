@@ -5,7 +5,6 @@
 }
 
 <div class="boxedForm">
-
     @using (Html.BeginForm())
     {
         <div>
@@ -21,13 +20,14 @@
         </div>
         <p></p>
         <div class="action">
-            <button class="btn btn-outline-primary" type="submit">
-                <span>Save</span>
+            <button class="btn btn-primary" type="submit">
+                Create
+                @*<span>Save</span>*@
             </button>
         </div>
         <p></p>
         <div>
-            <a asp-controller="EmployeeTask" asp-action="Index" class="btn btn-primary">Back to main menu</a>
+            <a asp-controller="EmployeeTask" asp-action="Index" class="btn btn-secondary">Back to main menu</a>
         </div>
     }
 </div>

@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ToDoProject.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using ToDoProject.Data.ORM;
+using DbUp;
+using System.Reflection;
 
 namespace ToDoProject
 {
@@ -47,6 +49,18 @@ namespace ToDoProject
                 .Build();
             });
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            EnsureDatabase.For.SqlDatabase(connectionString);
+
+            var upgrader =
+                DeployChanges.To
+                    .SqlDatabase(connectionString)
+                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                    .LogToConsole()
+                    .Build();
+        
+            var result = upgrader.PerformUpgrade();
+
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();

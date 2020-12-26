@@ -6,6 +6,19 @@
 }
 <h2>@ViewData["Title"]</h2>
 <style>
+    .btn1 {
+        display: inline;
+        font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: .275rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
     li {
         list-style-type: none; 
     }
@@ -19,7 +32,7 @@
 </style>
 
 <p>
-    <a asp-controller="EmployeeTask" asp-action="Create" class="btn btn-outline-secondary">Assign task to employee</a>
+    <a asp-controller="EmployeeTask" asp-action="Create" class="btn btn-primary">Assign task to employee</a>
 </p>
 
 @*table {
@@ -67,9 +80,9 @@
                     <ul>
                         @foreach (EmployeeTask item1 in @item.EmployeeTasks)
                         {
-                            <li style='margin-bottom:5px; height:30px;'>
-                                <a style='width:80px; height:30px;' asp-controller="EmployeeTask" asp-action="Delete" asp-route-employeeId="@item1.Employee.Id" asp-route-taskId="@item.Id" class="btn btn-danger">Delete</a>
-                            </li>
+                        <li style='margin-bottom:5px; height:30px;'>
+                            <a asp-controller="EmployeeTask" asp-action="Delete" asp-route-employeeId="@item1.Employee.Id" asp-route-taskId="@item.Id" class="btn1 btn-danger">Delete</a>    @*style='width:80px; height:30px;'*@
+                        </li>
                         }
                     </ul>
                 </td>

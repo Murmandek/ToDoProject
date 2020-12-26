@@ -1,5 +1,5 @@
 ﻿@model ToDoProject.Models.ViewModels.TasksViewModel
-@addTagHelper *, ToDoProject
+@*@addTagHelper *, ToDoProject*@
 @{
     ViewData["Title"] = "List of Tasks";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,7 +7,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-controller="Tasks" asp-action="Create" class="btn btn-outline-secondary">Add task</a>
+    <a asp-controller="Tasks" asp-action="Create" class="btn btn-primary">Add task</a>
 </p>
 
 
@@ -17,7 +17,7 @@
             <input type="text" asp-for="SearchString" name="SearchString" class="form-control" placeholder="Search by name, discription" />
         </div>
         <div class="col">
-            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+            <input type="submit" value="Search" class="btn btn-outline-success my-2 my-sm-0" />
             <input type="submit" asp-action="ClearIndex" value="Back to Full List" class="btn btn-outline-secondary" />
         </div>
     </div>
@@ -38,7 +38,7 @@
             <td><a asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
             <td>@item.Description</td>
             <td>
-                <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"> Edit </a>
+                <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary"> Edit </a>
                 <a asp-controller="Tasks" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>

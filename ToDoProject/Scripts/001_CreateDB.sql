@@ -1,15 +1,4 @@
-/*Create database tododb*/
-
-ALTER TABLE EmployeeTask
-DROP CONSTRAINT FK_EmployeeTask_Employee,
-	 CONSTRAINT FK_EmployeeTask_Tasks;
-	 
-ALTER TABLE Image
-	DROP CONSTRAINT FK_Image_Employee;
-
-DROP TABLE Employee
-GO
-CREATE TABLE Employee
+CREATE TABLE dbo.Employee
 (Id int identity (1,1),
  Name varchar(100) NOT NULL,
  Age int NOT NULL,
@@ -19,9 +8,7 @@ CREATE TABLE Employee
 )
 GO
 
-DROP TABLE Tasks
-GO
-CREATE TABLE Tasks
+CREATE TABLE dbo.Tasks
 (Id int identity (1,1) NOT NULL,
  Name varchar(100) NOT NULL unique,
  Description varchar(100) NOT NULL,
@@ -29,9 +16,7 @@ CREATE TABLE Tasks
 )
 GO
 
-DROP TABLE EmployeeTask
-GO
-CREATE TABLE EmployeeTask
+CREATE TABLE dbo.EmployeeTask
 (EmployeeId int NOT NULL,
  TaskId int NOT NULL,
  AppointmentDate datetime NOT NULL,
@@ -39,9 +24,7 @@ CREATE TABLE EmployeeTask
 )
 GO
 
-DROP TABLE Image
-GO
-CREATE TABLE Image
+CREATE TABLE dbo.Image
 (Id int identity (1,1) NOT NULL,
  Name varchar(100) NOT NULL,
  Avatar varbinary(max),
@@ -51,20 +34,18 @@ CREATE TABLE Image
 GO
 
 
-ALTER TABLE EmployeeTask
+ALTER TABLE dbo.EmployeeTask
 	ADD CONSTRAINT FK_EmployeeTask_Employee FOREIGN KEY (EmployeeId) REFERENCES Employee ON DELETE CASCADE,
 		CONSTRAINT FK_EmployeeTask_Tasks FOREIGN KEY (TaskId) REFERENCES Tasks ON DELETE CASCADE;
 
 GO
 
-ALTER TABLE Image
+ALTER TABLE dbo.Image
 	ADD CONSTRAINT FK_Image_Employee FOREIGN KEY (EmployeeId) REFERENCES Employee ON DELETE CASCADE;
 
 GO
 
-DROP TABLE Person
-GO
-CREATE TABLE Person
+CREATE TABLE dbo.Person
 (Id int identity primary key,
  Login varchar(50) NOT NULL unique,
  Password varchar(50) NOT NULL
@@ -486,39 +467,3 @@ insert into Image (Name, Avatar, EmployeeId) values ('Ramon', CAST('data:image/p
 insert into Image (Name, Avatar, EmployeeId) values ('Ardelia', CAST('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAALoSURBVDjLbVNbSJNhGH7+7z9scyqepi6JobKmE5ZigSWpYV5UskYZkRJk0lVeVN5GF96EF0kXZXRVFHWTKynqKijFQmvqTYRMcWuYodtS59zxP/T9vwdc9P08vP93eJ738L0foygKdkbb7bHLhlxdF2HQSqcM/RJQGEiSqFsNK0PjA429+GcwewVO3fmcetZbzxOqsLOs2mA0hReeNSz5EvE5rzd/9P7p5A6H7FVjWSLyLIFvlYN/jcVcmMGPFaDcZITr0D6UW/UGLtf4eC8nQ0BRw95eJAyzi99/4rBkp3H1SCFYnj3/X4H+/n4DlSBqyByrggFLU1HtPI1kMiBCx7NgOEbu7u42ZAhQcg81K9S9oKbOMUTb4CmZoxHoBBZ6CoWu0oiEZDK50tHR0aOlTQhpM5vNL5ubm4WxnwrOHDYjlqaeKFGR1VSo6qYHBeEnMBTWYsSzipsd9cLy8rJzcHDwC0dF7jY0NKC4uBgHIw9wb+B9xjXxrIz22kWYatox7r6F+oQJVus1uFwuBAKBh6qAzW63a4edTidsNluGwGbgLa1DNXLNdagqGUGptQ1FRUUahoeHKzhJkgQK7bDf79c2QqHQVoHEEAwr71BxtBNS5A1M9k6EJl5DTJ8EQ1isr68zRBRFLCwsaFCJtECIRqMUG7SDPqK46iyQmMbXp8+RnRdHVtKHec/ILodLp9NYXFzUPMZiMaiCqVQKurQfBUYeOfkx6t0HtaJS9BvKW/ow++ERopZcBIPBLQGVoA69Xg+3200rr6DRNI28E5cgxyYpN476czbIqSXojV6Yba2Y932CyiWULEciEU1ATaG6xoHjjhxU1rQgKycERQzT/mQx9cpLT8iQE16YDlhAfo2hNEcB63A4ymZnZ4WZmZmSzeou3LjQhLWJAViaroPQlmT4/SD6KpTVHdMsI1SCM1qhy7YgPzz6PeM1XhmalDjaWhc3+sBK9CXLyjbkbWz9EykZhzpXlKm/wwxDbisZJhAAAAAASUVORK5CYII=' AS varbinary(max)), 98);
 insert into Image (Name, Avatar, EmployeeId) values ('Aymer', CAST('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGnSURBVDjLnZOxilNBGIW/mXt3CZsYQQtjJYqPkE4L8Q20WARbmxWEFQvBXrByQdDKF3CL1QcQH8DOKmVIkWIFbdybTe7M/x+Lm+zeFELcAz/DwJnD4eOf8OD5p4d37w2f/qrUwR25k3PG5cgMl5AZ5k5/O81Ho+mHo7e7RyxVDu8M97c63TjosIk61cz2gfOAWVKc/T5hU50mxfa9lInXj29vHPDkzYT1ADkAi2x8/jq6fpy7N37+8eJfPHqX+zx7/1397VSNRtOXJRIAMcB4tnOr19thcHWjMt1qZu9KcwMghEBVi+o/eZSW81nARXiUOaXzgBYPuTCH7I65Y1nNyKlN3BxcwtwoLTUNItDmoRhQECWRECIhGKEQhUfK3Pg8G+V0PPm2d5Du5zpxZXDtrA0BCoEkCkEMBWUAC8Ji09TNG8NqXnz8IUnK7sruSmaqzTQ30yIlndZJszrpZJ4kSY9efVnfqjaP9hmBECNFEQkxEIuVP1O2A9Z4LB8Xy3OlrbbfbD1gOp4c7h2k3VwnzAx3Jy0WzY90Q6ZmK93xBsNh0JL8RfUXD1Ut4VHY1QEAAAAASUVORK5CYII=' AS varbinary(max)), 99);
 insert into Image (Name, Avatar, EmployeeId) values ('Jonathan', CAST('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFhSURBVDjLpZMxbtZAEIW/N/bP7w4aSiQuQEODEFdIAVI6KFJwgeQenAEBFQVU1CBOkAsgroDSRMof77wUa68tK5GQstqVd1fz3rw345Vt7jN6gM8/zj9k6u3lIYer8ZaoTY5dD8OOj+9fPz/tAdJ6d/TqyeNhGCR1eMIkAMIGez6bMl7z/eefE6ASXF7lfr8f9OX3P0oxY2b9lmQspkznkibTnB0/paQEEACHESI6hKhTTa7mrepegsxNDWhyadAaLIQJCQssiAA3kxuCBpKRRMhkCBlCVW8a1p1rBPYCXjKKTrNRkOvCuougkkTULA4tHRQ4IVb1aQSeCJbMJlZgTdlTqsRwt4LqddUFJms2YWPfpsBugRFTRWffEkojs4CnH6sRaLoNQbImEWlXZV7L3xRx2OmCvH745sUj0Ozd89wMMY4H+k5uBA96ff326+/LQ/Gz/3mcfQe74FNt7T2f8w1Fi68/h3owMgAAAABJRU5ErkJggg==' AS varbinary(max)), 100);
-
-GO
-SELECT * from Tasks
-GO
-SELECT * from Employee
-GO
-SELECT * from Image
-GO
-SELECT * from EmployeeTask
-GO
-
-/*SELECT * from EmployeeTask
-GO
-Select emp.Id, ts.Id, emp.Name, ts.Name, ts.Description, AppointmentDate, Estemate
-FROM EmployeeTask as empTask INNER JOIN Employee as emp ON emp.Id = empTask.EmployeeId
-INNER JOIN Tasks as ts ON ts.Id = empTask.TaskId
-
-GO
-
-Select emp.Id, emp.Name FROM Employee as emp
-INNER JOIN EmployeeTask as empTasks ON emp.Id = empTasks.EmployeeId
-WHERE TaskId IN (Select Id from Tasks)
-GO
-
-Select ts.Name, ts.Description FROM Tasks as ts
-INNER JOIN EmployeeTask as empTasks ON ts.Id = empTasks.TaskId
-WHERE EmployeeId IN (Select Id from Employee)
-GO
-Select * from Image
-
-Select emp.Id, emp.Name FROM Employee as emp INNER JOIN EmployeeTask 
-as empTask ON emp.id = empTask.EmployeeId 
-WHERE empTask.TaskId = 2
-
-Select emp.Name, ts.Name, ts.Description FROM Employee as emp, Task as ts
-WHERE emp.Id IN (SELECT EmployeeId FROM EmployeeTask) AND ts.Id IN (SELECT TaskId FROM EmployeeTask)*/
