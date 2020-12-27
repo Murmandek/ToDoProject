@@ -6,20 +6,20 @@ using ToDoProject.Data.ORM;
 
 namespace ToDoProject.Models
 {
-    public class PersonRepository : IPersonRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public PersonRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context)
         {
             _db = context;
         }
 
-        public async Task<bool> CreateAsync(Person person)
+        public async Task<bool> CreateAsync(User user)
         {
             try
             {
-                await _db.Person.AddAsync(person);
+                await _db.Users.AddAsync(user);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -29,19 +29,19 @@ namespace ToDoProject.Models
             }
         }
 
-        public List<Person> GetPersons()
+        public List<User> GetUsers()
         {
-            return _db.Person.ToList();
+            return _db.Users.ToList();
         }
 
         public ClaimsIdentity GetIdentity(string username, string password)
         {
-            Person person = GetPersons().FirstOrDefault(x => x.Login == username && x.Password == password);
-            if (person != null)
+            User user = GetUsers().FirstOrDefault(x => x.Login == username && x.Password == password);
+            if (user != null)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

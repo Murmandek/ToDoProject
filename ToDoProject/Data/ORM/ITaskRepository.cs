@@ -6,12 +6,12 @@ namespace ToDoProject.Data.ORM
 {
     public interface ITaskRepository
     {
-        Task<List<Tasks>> GetAllTasksAsync();
-        Task CreateAsync(Tasks task, int employeeId);
-        Task CreateEmployeeTaskAsync(int taskId, int employeeId);
-        Task DeleteAsync(int id);
-        Task<Tasks> GetAsync(int id);
-        Task<List<Tasks>> GetTasksAsync(string searchString);
-        Task UpdateTaskAsync(Tasks task);
+        Task<List<Models.Task>> GetAllTasksAsync();
+        System.Threading.Tasks.Task CreateAsync(Models.Task task, int employeeId);
+        System.Threading.Tasks.Task CreateEmployeeTaskAsync(int taskId, int employeeId);
+        System.Threading.Tasks.Task DeleteAsync(int id);
+        Task<Models.Task> GetTaskAsync(int id);
+        Task<List<Models.Task>> GetTasksAsync(string searchString);
+        System.Threading.Tasks.Task UpdateTaskAsync(Models.Task task);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ToDoProject.Data.ORM;
+using System.Linq;
 
 namespace ToDoProject.Models
 {
@@ -16,20 +17,32 @@ namespace ToDoProject.Models
 
         public async Task<EmployeeTask> GetAsync(int employeeId, int taskId)
         {
-            return await _db.EmployeeTask.FirstOrDefaultAsync(t => t.EmployeeId == employeeId && t.TaskId == taskId);
+            return await _db.EmployeeTasks.FirstOrDefaultAsync(t => t.EmployeeId == employeeId && t.TaskId == taskId);
         }
 
-        public async Task<List<Tasks>> GetEmployeeTasksAsync()
+        public async Task<List<Task>> GetEmployeeTasksAsync(string searchString)
         {
-            var tasks = await _db.Tasks.Include(c => c.EmployeeTasks)
-                                .ThenInclude(sc => sc.Employee)
-                                .ToListAsync();
-            return tasks;
+            if (searchString != null)
+            {
+                var tasks = await _db.Tasks.Where(t => t.Name.Contains(searchString))
+                                    .Include(c => c.EmployeeTasks)
+                                    .ThenInclude(sc => sc.Employee)
+                                    .ToListAsync();
+                return tasks;
+            }
+            else
+            {
+                var tasks = await _db.Tasks
+                                    .Include(c => c.EmployeeTasks)
+                                    .ThenInclude(sc => sc.Employee)
+                                    .ToListAsync();
+                return tasks;
+            }
         }
 
-        public async Task DeleteAsync(int employeeId, int taskId)
+        public async System.Threading.Tasks.Task DeleteAsync(int employeeId, int taskId)
         {
-            _db.EmployeeTask.Remove(await GetAsync(employeeId, taskId));
+            _db.EmployeeTasks.Remove(await GetAsync(employeeId, taskId));
             await _db.SaveChangesAsync();
         }
     }

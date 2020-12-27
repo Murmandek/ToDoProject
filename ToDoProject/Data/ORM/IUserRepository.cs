@@ -5,10 +5,10 @@ using ToDoProject.Models;
 
 namespace ToDoProject.Data.ORM
 {
-    public interface IPersonRepository
+    public interface IUserRepository
     {
-        Task<bool> CreateAsync(Person people);
-        List<Person> GetPersons();
+        Task<bool> CreateAsync(User user);
+        List<User> GetUsers();
 
         ClaimsIdentity GetIdentity(string username, string password);
     }

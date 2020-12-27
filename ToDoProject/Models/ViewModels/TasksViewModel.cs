@@ -4,7 +4,7 @@ namespace ToDoProject.Models.ViewModels
 {
     public class TasksViewModel
     {
-        public IEnumerable<Tasks> Tasks{ get; set; }
+        public IEnumerable<Task> Tasks{ get; set; }
         public PaginationViewModel PaginationViewModel { get; set; }
         public string SearchString { get; set; }
     }

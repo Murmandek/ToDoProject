@@ -14,9 +14,9 @@
         </div>
         <p></p>
         <div>
-            <label asp-for="Taskss"></label>
-            <select asp-for="TaskSelectedValue" class="form-control  form-control-sm" asp-items="@(new SelectList(Model.Taskss, "Id", "Name"))"></select>
-            <span asp-validation-for="Tasks.Id" />
+            <label asp-for="Tasks"></label>
+            <select asp-for="TaskSelectedValue" class="form-control  form-control-sm" asp-items="@(new SelectList(Model.Tasks, "Id", "Name"))"></select>
+            <span asp-validation-for="Task.Id" />
         </div>
         <p></p>
         <div class="action">

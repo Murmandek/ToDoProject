@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,27 +13,27 @@ namespace ToDoProject.Controllers
     {
         private readonly ILogger<EmployeeController> _logger;
         private readonly IEmployeeRepository _repo;
-        private readonly IImageRepository _repoImage;
 
-        public EmployeeController(ILogger<EmployeeController> logger, IEmployeeRepository context, IImageRepository contextImage)
+        public EmployeeController(ILogger<EmployeeController> logger, IEmployeeRepository context)
         {
             _logger = logger;
             _repo = context;
-            _repoImage = contextImage;
         }
 
+        [Route("employees")]
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
-        public async Task<IActionResult> Index(string searchString, int page = 1)
+        public async Task<IActionResult> Index(string searchString, int? page)
         {
             int pageSize = 3;
+            int pageNumder = page ?? 1;
             var employees = await _repo.GetEmployeesAsync(searchString);
 
-            var count = employees.Count();
-            var items = employees.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            int count = employees.Count();
+            var items = employees.Skip((pageNumder - 1) * pageSize).Take(pageSize).ToList();
 
             EmployeeViewModel employeeViewModel = new EmployeeViewModel
             {
-                PaginationViewModel = new PaginationViewModel(count, page, pageSize),
+                PaginationViewModel = new PaginationViewModel(count, pageNumder, pageSize),
                 Employees = items,
                 SearchString = searchString
             };
@@ -47,21 +46,23 @@ namespace ToDoProject.Controllers
             return RedirectToAction("Index", "Employee", searchString);
         }
 
+        [Route("employees/info/{id}")]
         public async Task<IActionResult> Details(int id)
         {
-            //Employee employee = await _repo.GetAsync(id);
             Employee employee = await _repo.GetEmployeeWithImage(id);
             if (employee != null)
                 return View(employee);
             return NotFound();
         }
 
+        [Route("employees/add-employee")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Route("employees/add-employee")]
         public async Task<ActionResult> Create(Employee employee, ImageViewModel imageVM)
         {
             if (ModelState.IsValid)
@@ -73,30 +74,26 @@ namespace ToDoProject.Controllers
                 return View(employee);
         }
 
+        [Route("employees/edit-employee/{id}")]
         public async Task<ActionResult> Edit(int id)
         {
-            Employee employee = await _repo.GetAsync(id);
-            Image image = await _repoImage.GetAsync(employee.Id);
-            var res = new EmployeeImageViewModel 
-            { 
-                Employee = employee, 
-                Image = image 
-            };
-            if (employee != null)
-                return View(res);
+            Employee employeeWithImage = await _repo.GetEmployeeWithImage(id);
+            if (employeeWithImage != null)
+                return View(employeeWithImage);
             return NotFound();
         }
 
         [HttpPost]
+        [Route("employees/edit-employee/{id}")]
         public async Task<ActionResult> Edit(Employee employee, ImageViewModel image)
         {
             await _repo.UpdateAsync(employee, image);
-         //   await _repoImage.UpdateAsync(image);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         [ActionName("Delete")]
+        [Route("employees/remove-employee/{id}")]
         public async Task<ActionResult> ConfirmDelete(int id)
         {
             Employee employee = await _repo.GetEmployeeWithImage(id);
@@ -106,15 +103,11 @@ namespace ToDoProject.Controllers
         }
 
         [HttpPost]
+        [Route("employees/remove-employee/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await _repo.DeleteAsync(id);
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

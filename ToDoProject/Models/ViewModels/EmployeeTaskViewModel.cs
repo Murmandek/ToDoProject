@@ -9,12 +9,12 @@ namespace ToDoProject.Models
         public virtual Employee Employee { get; set; }
 
         public int TaskSelectedValue { get; set; }
-        public virtual Tasks Tasks { get; set; }
+        public virtual Task Task { get; set; }
 
         [DisplayName("Employee")]
         public virtual ICollection<Employee> Employees { get; set; }
 
-        [DisplayName("Tasks")]
-        public virtual ICollection<Tasks> Taskss { get; set; }
+        [DisplayName("Task")]
+        public virtual ICollection<Task> Tasks { get; set; }
     }
 }

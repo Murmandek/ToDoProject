@@ -10,38 +10,41 @@ namespace ToDoProject.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IPersonRepository _repo;
-        public AccountController(IPersonRepository r)
+        private readonly IUserRepository _repo;
+
+        public AccountController(IUserRepository context)
         {
-            _repo = r;
+            _repo = context;
         }
 
         public IActionResult Index()
         {
-            return View("Authentication"); //"~/Views/Account/Authentication.cshtml"
+            return View("Authentication"); 
         }
 
+        [Route("registration")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Person person)
+        [Route("registration")]
+        public async Task<ActionResult> Create(User user)
         {
             if (ModelState.IsValid)
             {
-                var result = await _repo.CreateAsync(person);
+                var result = await _repo.CreateAsync(user);
                 if (result == true)
                     return RedirectToAction("Index");
                 else
                 {
-                    ModelState.AddModelError("Login", $"Sorry, user name {person.Login} is already taken"); 
-                    return View(person);
+                    ModelState.AddModelError("Login", $"Sorry, user name {user.Login} is already taken"); 
+                    return View(user);
                 }  
             }
             else
-                return View(person);
+                return View(user);
         }
 
         [HttpPost("/token")]

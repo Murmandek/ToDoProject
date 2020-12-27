@@ -48,6 +48,7 @@ namespace ToDoProject
                 .RequireAuthenticatedUser()
                 .Build();
             });
+
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             EnsureDatabase.For.SqlDatabase(connectionString);
@@ -65,7 +66,7 @@ namespace ToDoProject
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
-            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             services.AddControllers();
             services.AddControllersWithViews();
@@ -98,7 +99,7 @@ namespace ToDoProject
                 
                 endpoints.MapControllerRoute(
                     name: "default",
-                   pattern: "{controller=Account}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Index}/{id?}"); 
             });
         }
     }

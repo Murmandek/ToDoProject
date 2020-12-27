@@ -17,17 +17,19 @@ namespace ToDoProject.Models
             _db = context;
         }
 
-        public async Task<List<Tasks>> GetAllTasksAsync()
+        public async Task<List<Task>> GetAllTasksAsync()
         {
             return await _db.Tasks.OrderBy(t => t.Name).ToListAsync();
         }
 
-        public async Task<List<Tasks>> GetTasksAsync(string searchString)
+        public async Task<List<Task>> GetTasksAsync(string searchString)
         {
             if (searchString != null)
             {
-                return await _db.Tasks.OrderBy(e => e.Name).Where(e => e.Name.Contains(searchString)
-                                                                || e.Description.Contains(searchString)).ToListAsync();
+                return await _db.Tasks.OrderBy(e => e.Name)
+                                        .Where(e => e.Name.Contains(searchString)
+                                                || e.Description.Contains(searchString))
+                                        .ToListAsync();
             }
             else
             {
@@ -35,18 +37,20 @@ namespace ToDoProject.Models
             }
         }
 
-        public async Task<Tasks> GetAsync(int id)
+        public async Task<Task> GetTaskAsync(int id)
         {
             return await _db.Tasks.FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public async Task CreateAsync(Tasks task, int employeeId)
+        public async System.Threading.Tasks.Task CreateAsync(Task task, int employeeId)
         {
             int et = 0;
-            et = await _db.EmployeeTask.Where(e => e.EmployeeId == employeeId && e.Tasks.Name == task.Name).CountAsync();
+            et = await _db.EmployeeTasks.Where(e => e.EmployeeId == employeeId 
+                                                && e.Task.Name == task.Name)
+                                        .CountAsync();
             if (et == 0)
             {
-                Tasks taskId;
+                Task taskId = new Task();
                 int taskCount = 0;
                 taskCount = await _db.Tasks.Where(t => t.Name == task.Name).CountAsync();
                 if (taskCount == 0)
@@ -54,7 +58,8 @@ namespace ToDoProject.Models
                     await _db.Tasks.AddAsync(task);
                     await _db.SaveChangesAsync();
 
-                    taskId = await _db.Tasks.OrderBy(t => t.Id).LastOrDefaultAsync();
+                    //taskId = await _db.Tasks.OrderBy(t => t.Id).LastOrDefaultAsync();
+                    taskId.Id = task.Id;
                 }
                 else
                 {
@@ -68,30 +73,30 @@ namespace ToDoProject.Models
                     AppointmentDate = DateTime.UtcNow,
                     Estemate = 4
                 };
-                await _db.EmployeeTask.AddAsync(employeeTask);
+                await _db.EmployeeTasks.AddAsync(employeeTask);
                 await _db.SaveChangesAsync();
             }
         }
 
-        public async Task CreateEmployeeTaskAsync(int taskId, int employeeId)
+        public async System.Threading.Tasks.Task CreateEmployeeTaskAsync(int taskId, int employeeId)
         {
-            int et = 0;
-            et = await _db.EmployeeTask.Where(e => e.EmployeeId == employeeId && e.TaskId == taskId).CountAsync();
-            if (et == 0)
+            int countEmployeeTask = 0;
+            countEmployeeTask = await _db.EmployeeTasks.Where(e => e.EmployeeId == employeeId && e.TaskId == taskId).CountAsync();
+            if (countEmployeeTask == 0)
             {
-                var employeeTask = new EmployeeTask
+                EmployeeTask employeeTask = new EmployeeTask
                 {
                     EmployeeId = employeeId,
                     TaskId = taskId,
                     AppointmentDate = DateTime.UtcNow,
                     Estemate = 4
                 };
-                await _db.EmployeeTask.AddAsync(employeeTask);
+                await _db.EmployeeTasks.AddAsync(employeeTask);
                 await _db.SaveChangesAsync();
             }
         }
 
-        public async Task UpdateTaskAsync(Tasks newTask)
+        public async System.Threading.Tasks.Task UpdateTaskAsync(Task newTask)
         {
             var oldTask = await _db.Tasks.Where(t => t.Id == newTask.Id).FirstOrDefaultAsync();
             oldTask.Name = newTask.Name;
@@ -99,9 +104,9 @@ namespace ToDoProject.Models
             await _db.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(int id)
         {
-            _db.Tasks.Remove(await GetAsync(id));
+            _db.Tasks.Remove(await GetTaskAsync(id));
             await _db.SaveChangesAsync();
         }
     }

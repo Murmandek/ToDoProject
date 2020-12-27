@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 using ToDoProject.Data.ORM;
 using ToDoProject.Models;
+using ToDoProject.Models.ViewModels;
 
 namespace ToDoProject.Controllers
 {
@@ -18,44 +20,69 @@ namespace ToDoProject.Controllers
             _repoTask = repoTask;
         }
 
+        [Route("employees-tasks")]
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? page)
         {
-            return View(await _repo.GetEmployeeTasksAsync());
+            int pageSize = 3;
+            int pageNumder = page ?? 1;
+            var employeeTasks = await _repo.GetEmployeeTasksAsync(searchString);
+
+            int count = employeeTasks.Count();
+            var items = employeeTasks.Skip((pageNumder - 1) * pageSize).Take(pageSize).ToList();
+
+            TasksViewModel tasksViewModel = new TasksViewModel
+            {
+                PaginationViewModel = new PaginationViewModel(count, pageNumder, pageSize),
+                Tasks = items,
+                SearchString = searchString
+            };
+
+            return View(tasksViewModel);
+            //return View(await _repo.GetEmployeeTasksAsync());
         }
 
+        public IActionResult ClearIndex()
+        {
+            string searchString = "";
+            return RedirectToAction("Index", "EmployeeTask", searchString);
+        }
+
+
+        [Route("employees-tasks/add-employee-task")]
         [HttpGet]
         public async Task<ActionResult> Create()
         {
             var employees = await _repoEmp.GetAllEmployeesAsync();
             var tasks = await _repoTask.GetAllTasksAsync();
 
-            EmployeeTaskViewModel etViewModel = new EmployeeTaskViewModel
+            EmployeeTaskViewModel employeeTaskViewModel = new EmployeeTaskViewModel
             {
                 Employees = employees,
-                Taskss = tasks
+                Tasks = tasks
             };
 
-            return View(etViewModel);
+            return View(employeeTaskViewModel);
         }
-        
+
         /// <summary>
         /// to save entered data
         /// </summary>
+        [Route("employees-tasks/add-employee-task")]
         [HttpPost]
-        public async Task<ActionResult> Create(EmployeeTaskViewModel etViewModel) 
+        public async Task<ActionResult> Create(EmployeeTaskViewModel employeeTaskViewModel) 
         {
-            var employees = await _repoEmp.GetAllEmployeesAsync();
-            etViewModel.Employees = employees;
+            //var employees = await _repoEmp.GetAllEmployeesAsync();
 
             if (ModelState.IsValid) 
             {
-                await _repoTask.CreateEmployeeTaskAsync(etViewModel.TaskSelectedValue, etViewModel.EmployeeSelectedValue);
+                await _repoTask.CreateEmployeeTaskAsync(employeeTaskViewModel.TaskSelectedValue, employeeTaskViewModel.EmployeeSelectedValue);
                 return RedirectToAction("Index");
             }
             else
             {
-                return View(etViewModel);
+                employeeTaskViewModel.Employees = await _repoEmp.GetAllEmployeesAsync();
+                return View(employeeTaskViewModel);
             }
         }
 

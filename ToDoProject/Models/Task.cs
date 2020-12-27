@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ToDoProject.Models
 {
-    public class Tasks
+    public class Task
     {
         public int Id { get; set; }
 
@@ -17,7 +17,7 @@ namespace ToDoProject.Models
             
         public List<EmployeeTask> EmployeeTasks { get; set; } 
 
-        public Tasks()
+        public Task()
         {
             EmployeeTasks = new List<EmployeeTask>();
         }

@@ -9,7 +9,7 @@ namespace ToDoProject.Models
         public Employee Employee { get; set; }
 
         public int TaskId { get; set; }
-        public Tasks Tasks { get; set; }
+        public Task Task { get; set; }
 
         public int Estemate { get; set; }      
         [Display(Name = "Task start")]

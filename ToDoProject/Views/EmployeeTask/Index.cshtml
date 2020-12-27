@@ -1,4 +1,7 @@
-﻿@model List<ToDoProject.Models.Tasks>
+﻿@*@model List<ToDoProject.Models.Task>*@
+
+
+@model ToDoProject.Models.ViewModels.TasksViewModel
 
 @{
     ViewData["Title"] = "Employee task list";
@@ -19,12 +22,13 @@
         border-radius: .25rem;
         transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     }
+
     li {
-        list-style-type: none; 
+        list-style-type: none;
     }
 
     ul {
-        margin-left: 0; 
+        margin-left: 0;
         padding-left: 0;
         padding-bottom: 0;
         margin-bottom: 0;
@@ -35,11 +39,19 @@
     <a asp-controller="EmployeeTask" asp-action="Create" class="btn btn-primary">Assign task to employee</a>
 </p>
 
-@*table {
-        border-collapse: collapse;
-        padding-bottom: 0;
-        padding-top: 0;
-    }*@
+<form asp-action="Index" method="get">
+    <div class="form-row">
+        <div class="col">
+            <input type="text" asp-for="SearchString" name="SearchString" class="form-control" placeholder="Search by tasks" />
+        </div>
+        <div class="col">
+            <input type="submit" value="Search" class="btn btn-outline-success my-2 my-sm-0" />
+            <input type="submit" asp-action="ClearIndex" value="Back to Full List" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+    <p></p>
+</form>
+
 
 <table class="table">
     <tr>
@@ -49,7 +61,7 @@
         <th>Actions</th>
     </tr>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Tasks)
         {
             <tr>
                 <td>
@@ -80,9 +92,9 @@
                     <ul>
                         @foreach (EmployeeTask item1 in @item.EmployeeTasks)
                         {
-                        <li style='margin-bottom:5px; height:30px;'>
-                            <a asp-controller="EmployeeTask" asp-action="Delete" asp-route-employeeId="@item1.Employee.Id" asp-route-taskId="@item.Id" class="btn1 btn-danger">Delete</a>    @*style='width:80px; height:30px;'*@
-                        </li>
+                            <li style='margin-bottom:5px; height:30px;'>
+                                <a asp-controller="EmployeeTask" asp-action="Delete" asp-route-employeeId="@item1.Employee.Id" asp-route-taskId="@item.Id" class="btn1 btn-danger">Delete</a>    @*style='width:80px; height:30px;'*@
+                            </li>
                         }
                     </ul>
                 </td>
@@ -90,3 +102,41 @@
         }
     </tbody>
 </table>
+
+
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (Model.PaginationViewModel.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)" class="page-link">
+                    Previous
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber - 1)
+                </a>
+            </li>
+        }
+        @if (Model.PaginationViewModel.HasNextPage)
+        {
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber)
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)" class="page-link">
+                    @(Model.PaginationViewModel.PageNumber + 1)
+                </a>
+            </li>
+            <li class="page-item">
+                <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)" class="page-link">
+                    Next
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

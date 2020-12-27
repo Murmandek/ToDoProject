@@ -1,4 +1,4 @@
-﻿@model ToDoProject.Models.Person
+﻿@model ToDoProject.Models.User
 @{
     ViewData["Title"] = "Autorization";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -9,7 +9,8 @@
     <div class="form-group" id="userInfo" style="display:none;">
         <label>You enter as: </label> <label id="userName"></label>
         <p></p>
-        <button type="button" class="btn btn-primary" onclick=' location.href="/Employee/Index"'>Ok</button>
+        @*<button type="button" class="btn btn-primary" onclick=' location.href="/employees"'>Ok</button>  @location.href="/Employee/Index"'*@
+        <a class="btn btn-primary" asp-area="" asp-controller="Employee" asp-action="Index"> Ok </a>
     </div>
     <div id="loginForm">
         <div class="form-group">

@@ -11,23 +11,22 @@ namespace ToDoProject.Models
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly ApplicationDbContext _db;
-        private readonly IImageRepository _imageRepository;
-        public EmployeeRepository(ApplicationDbContext context, IImageRepository repository)
+
+        public EmployeeRepository(ApplicationDbContext context)
         {
             _db = context;
-            _imageRepository = repository;
         }
         
         public async Task<List<Employee>> GetAllEmployeesAsync()
         {
-            return await _db.Employee.OrderBy(e => e.Name).ToListAsync();
+            return await _db.Employees.OrderBy(e => e.Name).ToListAsync();
         }
 
         public async Task<List<Employee>> GetEmployeesAsync(string searchString)
         {
             if (searchString != null)
             { 
-                return await _db.Employee.Where(e => e.Name.Contains(searchString)
+                return await _db.Employees.Where(e => e.Name.Contains(searchString)
                                         || e.Position.Contains(searchString))
                                         .Include(e => e.Image)
                                         .AsNoTracking()
@@ -35,8 +34,7 @@ namespace ToDoProject.Models
             }
             else
             {
-                return await _db.Employee
-                                        .Include(e => e.Image)
+                return await _db.Employees.Include(e => e.Image)
                                         .AsNoTracking()
                                         .ToListAsync();
             }
@@ -44,19 +42,19 @@ namespace ToDoProject.Models
 
         public async Task<Employee> GetAsync(int id)
         {
-            return await _db.Employee.FirstOrDefaultAsync(e => e.Id == id);
+            return await _db.Employees.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<Employee> GetEmployeeWithImage(int id)
         {
-            return await _db.Employee.Include(e => e.Image)
+            return await _db.Employees.Include(e => e.Image)
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task CreateAsync(Employee employee, ImageViewModel imageVM)
+        public async System.Threading.Tasks.Task CreateAsync(Employee employee, ImageViewModel imageVM)
         {
-            var image = new Image
+            Image image = new Image
             {
                 Name = imageVM.Name,
                 EmployeeId = employee.Id
@@ -66,7 +64,7 @@ namespace ToDoProject.Models
             {
                 byte[] imageData = null;
 
-                using (var binaryReader = new BinaryReader(imageVM.Avatar.OpenReadStream()))
+                using (BinaryReader binaryReader = new BinaryReader(imageVM.Avatar.OpenReadStream()))
                 {
                     imageData = binaryReader.ReadBytes((int)imageVM.Avatar.Length);
                 }
@@ -76,21 +74,21 @@ namespace ToDoProject.Models
 
             employee.Image = image;
 
-            await _db.Employee.AddAsync(employee);
+            await _db.Employees.AddAsync(employee);
             await _db.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Employee newEmployee, ImageViewModel newImage)
+        public async System.Threading.Tasks.Task UpdateAsync(Employee newEmployee, ImageViewModel newImage)
         {
-            var oldEmployee = await _db.Employee.Where(t => t.Id == newEmployee.Id).FirstOrDefaultAsync();
+            Employee oldEmployee = await _db.Employees.Where(e => e.Id == newEmployee.Id)
+                                                    .Include(i => i.Image)
+                                                    .FirstOrDefaultAsync();
             oldEmployee.Name = newEmployee.Name;
             oldEmployee.Age = newEmployee.Age;
             oldEmployee.Address = newEmployee.Address;
             oldEmployee.Position = newEmployee.Position;
 
-
-            var oldImage = await _db.Image.Where(t => t.EmployeeId == newImage.EmployeeId).FirstOrDefaultAsync();
-            oldImage.Name = newImage.Name;
+            oldEmployee.Image.Name = newImage.Name;
 
             if (newImage.Avatar != null)
             {
@@ -101,18 +99,18 @@ namespace ToDoProject.Models
                     imageData = binaryReader.ReadBytes((int)newImage.Avatar.Length);
                 }
 
-                oldImage.Avatar = imageData;
+                oldEmployee.Image.Avatar = imageData;
             }
             else
             {
-                oldImage.Avatar = oldImage.Avatar;
+                oldEmployee.Image.Avatar = oldEmployee.Image.Avatar;
             }
             await _db.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(int id)
         {
-            _db.Employee.Remove(await GetAsync(id));
+            _db.Employees.Remove(await GetAsync(id));
             await _db.SaveChangesAsync();
         }
     }

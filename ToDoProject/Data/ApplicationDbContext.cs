@@ -6,9 +6,9 @@ using System.IO;
 
 namespace ToDoProject.Models
 {
-    public class TaskMapping : IEntityTypeConfiguration<Tasks>
+    public class TaskMapping : IEntityTypeConfiguration<Task>
     {
-        public void Configure(EntityTypeBuilder<Tasks> builder)
+        public void Configure(EntityTypeBuilder<Task> builder)
         {
             builder.ToTable("Tasks");
 
@@ -24,7 +24,7 @@ namespace ToDoProject.Models
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.ToTable("Employee");
+            builder.ToTable("Employees");
 
             builder.HasKey(t => t.Id);
 
@@ -38,11 +38,11 @@ namespace ToDoProject.Models
 
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Employee> Employee { get; set; }
-        public DbSet<Tasks> Tasks { get; set; }
-        public DbSet<EmployeeTask> EmployeeTask { get; set; }
-        public DbSet<Person> Person { get; set; }
-        public DbSet<Image> Image{ get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<EmployeeTask> EmployeeTasks { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         private readonly StreamWriter logStream = new StreamWriter("mylog.txt", true);
 
@@ -71,11 +71,11 @@ namespace ToDoProject.Models
                 .HasForeignKey(sc => sc.EmployeeId);
 
             modelBuilder.Entity<EmployeeTask>()
-                .HasOne(sc => sc.Tasks)
+                .HasOne(sc => sc.Task)
                 .WithMany(c => c.EmployeeTasks)
                 .HasForeignKey(sc => sc.TaskId);
 
-            modelBuilder.Entity<Tasks>()
+            modelBuilder.Entity<Task>()
                 .HasIndex(t => t.Name)
                 .IsUnique();
 
