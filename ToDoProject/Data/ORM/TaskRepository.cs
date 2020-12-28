@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ToDoProject.Data.ORM;
+using Project = System.Threading.Tasks;
 
 namespace ToDoProject.Models
 {
@@ -43,7 +44,7 @@ namespace ToDoProject.Models
             return await _db.Tasks.FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public async System.Threading.Tasks.Task CreateAsync(Task task, int employeeId)
+        public async Project.Task CreateAsync(Task task, int employeeId)
         {
             int et = 0;
             et = await _db.EmployeeTasks.Where(e => e.EmployeeId == employeeId 
@@ -79,7 +80,7 @@ namespace ToDoProject.Models
             }
         }
 
-        public async System.Threading.Tasks.Task CreateEmployeeTaskAsync(int taskId, int employeeId)
+        public async Project.Task CreateEmployeeTaskAsync(int taskId, int employeeId)
         {
             int countEmployeeTask = 0;
             countEmployeeTask = await _db.EmployeeTasks.Where(e => e.EmployeeId == employeeId && e.TaskId == taskId).CountAsync();
@@ -97,7 +98,7 @@ namespace ToDoProject.Models
             }
         }
 
-        public async System.Threading.Tasks.Task UpdateTaskAsync(Task newTask)
+        public async Project.Task UpdateTaskAsync(Task newTask)
         {
             var oldTask = await _db.Tasks.Where(t => t.Id == newTask.Id).FirstOrDefaultAsync();
             oldTask.Name = newTask.Name;
@@ -105,7 +106,7 @@ namespace ToDoProject.Models
             await _db.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async Project.Task DeleteAsync(int id)
         {
             _db.Tasks.Remove(await GetTaskAsync(id));
             await _db.SaveChangesAsync();

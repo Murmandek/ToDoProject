@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ToDoProject.Data.ORM;
 using System.Linq;
+using Project = System.Threading.Tasks;
 
 namespace ToDoProject.Models
 {
@@ -40,7 +41,7 @@ namespace ToDoProject.Models
             }
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int employeeId, int taskId)
+        public async Project.Task DeleteAsync(int employeeId, int taskId)
         {
             _db.EmployeeTasks.Remove(await GetAsync(employeeId, taskId));
             await _db.SaveChangesAsync();

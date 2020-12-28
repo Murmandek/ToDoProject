@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ToDoProject.Data.ORM;
 using System.IO;
+using Project = System.Threading.Tasks;
 
 namespace ToDoProject.Models
 {
     public class EmployeeRepository : IEmployeeRepository
-    {
+    {        
         private readonly ApplicationDbContext _db;
 
         public EmployeeRepository(ApplicationDbContext context)
@@ -52,7 +53,7 @@ namespace ToDoProject.Models
                                     .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async System.Threading.Tasks.Task CreateAsync(Employee employee, ImageViewModel imageVM)
+        public async Project.Task CreateAsync(Employee employee, ImageViewModel imageVM)
         {
             Image image = new Image
             {
@@ -78,7 +79,7 @@ namespace ToDoProject.Models
             await _db.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task UpdateAsync(Employee newEmployee, ImageViewModel newImage)
+        public async Project.Task UpdateAsync(Employee newEmployee, ImageViewModel newImage)
         {
             Employee oldEmployee = await _db.Employees.Where(e => e.Id == newEmployee.Id)
                                                     .Include(i => i.Image)
@@ -108,7 +109,7 @@ namespace ToDoProject.Models
             await _db.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async Project.Task DeleteAsync(int id)
         {
             _db.Employees.Remove(await GetAsync(id));
             await _db.SaveChangesAsync();
