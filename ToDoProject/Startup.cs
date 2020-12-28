@@ -65,7 +65,6 @@ namespace ToDoProject
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();
-            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             services.AddControllers();

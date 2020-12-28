@@ -53,8 +53,7 @@ namespace ToDoProject.Controllers
         {
             if (!string.IsNullOrEmpty(id.ToString()))
             {
-                Models.Task tasks = await _repo.GetTaskAsync(id);
-                return View(tasks);
+                return View(await _repo.GetTaskAsync(id));
             }
             else
             {
@@ -70,11 +69,9 @@ namespace ToDoProject.Controllers
         [Route("tasks/add-task")]
         public async Task<ActionResult> Create()
         {
-            var employees = await _repoEmp.GetAllEmployeesAsync();
-
-            var createTaskViewModel = new CreateTaskViewModel
+            CreateTaskViewModel createTaskViewModel = new CreateTaskViewModel
             {
-                Employees = employees
+                Employees = await _repoEmp.GetAllEmployeesAsync()
             };
 
             return View(createTaskViewModel);
@@ -88,9 +85,6 @@ namespace ToDoProject.Controllers
         [Route("tasks/add-task")]
         public async Task<ActionResult> Create(CreateTaskViewModel createTaskViewModel)
         {
-            //       var employees = await _repoEmp.GetAllEmployeesAsync();
-
-
             Models.Task task = new Models.Task
             {
                 Name = createTaskViewModel.TaskName,
@@ -114,8 +108,7 @@ namespace ToDoProject.Controllers
         {
             if (!string.IsNullOrEmpty(id.ToString()))
             {
-                Models.Task tasks = await _repo.GetTaskAsync(id);
-                return View(tasks);
+                return View(await _repo.GetTaskAsync(id));
             }
             else
             {

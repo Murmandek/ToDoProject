@@ -19,7 +19,7 @@ namespace ToDoProject.Models
         
         public async Task<List<Employee>> GetAllEmployeesAsync()
         {
-            return await _db.Employees.OrderBy(e => e.Name).ToListAsync();
+            return await _db.Employees.OrderBy(e => e.Name).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<Employee>> GetEmployeesAsync(string searchString)

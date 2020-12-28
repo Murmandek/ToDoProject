@@ -39,7 +39,6 @@ namespace ToDoProject.Controllers
             };
 
             return View(tasksViewModel);
-            //return View(await _repo.GetEmployeeTasksAsync());
         }
 
         public IActionResult ClearIndex()
@@ -53,13 +52,10 @@ namespace ToDoProject.Controllers
         [HttpGet]
         public async Task<ActionResult> Create()
         {
-            var employees = await _repoEmp.GetAllEmployeesAsync();
-            var tasks = await _repoTask.GetAllTasksAsync();
-
             EmployeeTaskViewModel employeeTaskViewModel = new EmployeeTaskViewModel
             {
-                Employees = employees,
-                Tasks = tasks
+                Employees = await _repoEmp.GetAllEmployeesAsync(),
+                Tasks = await _repoTask.GetAllTasksAsync()
             };
 
             return View(employeeTaskViewModel);
@@ -72,8 +68,6 @@ namespace ToDoProject.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(EmployeeTaskViewModel employeeTaskViewModel) 
         {
-            //var employees = await _repoEmp.GetAllEmployeesAsync();
-
             if (ModelState.IsValid) 
             {
                 await _repoTask.CreateEmployeeTaskAsync(employeeTaskViewModel.TaskSelectedValue, employeeTaskViewModel.EmployeeSelectedValue);

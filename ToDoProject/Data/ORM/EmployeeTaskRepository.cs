@@ -24,19 +24,19 @@ namespace ToDoProject.Models
         {
             if (searchString != null)
             {
-                var tasks = await _db.Tasks.Where(t => t.Name.Contains(searchString))
+                return await _db.Tasks.Where(t => t.Name.Contains(searchString))
                                     .Include(c => c.EmployeeTasks)
                                     .ThenInclude(sc => sc.Employee)
+                                    .AsNoTracking()
                                     .ToListAsync();
-                return tasks;
             }
             else
             {
-                var tasks = await _db.Tasks
+                return await _db.Tasks
                                     .Include(c => c.EmployeeTasks)
                                     .ThenInclude(sc => sc.Employee)
+                                    .AsNoTracking()
                                     .ToListAsync();
-                return tasks;
             }
         }
 
