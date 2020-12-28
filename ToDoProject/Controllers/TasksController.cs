@@ -94,7 +94,7 @@ namespace ToDoProject.Controllers
             if (ModelState.IsValid)
             {
                 await _repo.CreateAsync(task, createTaskViewModel.SelectedValue);
-                return RedirectToAction("Create");
+                return RedirectToAction("Index");
             }
             else
             {
