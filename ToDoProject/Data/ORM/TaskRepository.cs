@@ -19,7 +19,7 @@ namespace ToDoProject.Models
 
         public async Task<List<Task>> GetAllTasksAsync()
         {
-            return await _db.Tasks.OrderBy(t => t.Name).ToListAsync();
+            return await _db.Tasks.OrderBy(t => t.Name).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<Task>> GetTasksAsync(string searchString)
@@ -29,11 +29,12 @@ namespace ToDoProject.Models
                 return await _db.Tasks.OrderBy(e => e.Name)
                                         .Where(e => e.Name.Contains(searchString)
                                                 || e.Description.Contains(searchString))
+                                        .AsNoTracking()
                                         .ToListAsync();
             }
             else
             {
-                return await _db.Tasks.OrderBy(e => e.Name).ToListAsync();
+                return await _db.Tasks.OrderBy(e => e.Name).AsNoTracking().ToListAsync();
             }
         }
 

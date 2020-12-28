@@ -36,7 +36,7 @@ namespace ToDoProject.Models
 
         public ClaimsIdentity GetIdentity(string username, string password)
         {
-            User user = GetUsers().FirstOrDefault(x => x.Login == username && x.Password == password);
+            User user = _db.Users.FirstOrDefault(x => x.Login == username && x.Password == password);
             if (user != null)
             {
                 var claims = new List<Claim>
