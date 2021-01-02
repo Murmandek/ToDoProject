@@ -6,8 +6,11 @@ namespace ToDoProject.Models
 {
     public class CreateTaskViewModel
     {
+        [Required(ErrorMessage = "Please enter task name")]
         [Display(Name = "Task name")]
         public string TaskName { get; set; }
+
+        [Required(ErrorMessage = "Please enter task description")]
         [Display(Name = "Task description")]
         public string TaskDescription { get; set; }
 

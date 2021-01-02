@@ -27,7 +27,8 @@ namespace ToDoProject.Models
         {
             if (searchString != null)
             { 
-                return await _db.Employees.Where(e => e.Name.Contains(searchString)
+                return await _db.Employees.OrderBy(e => e.Name)
+                                        .Where(e => e.Name.Contains(searchString)
                                         || e.Position.Contains(searchString))
                                         .Include(e => e.Image)
                                         .AsNoTracking()
@@ -35,7 +36,8 @@ namespace ToDoProject.Models
             }
             else
             {
-                return await _db.Employees.Include(e => e.Image)
+                return await _db.Employees.OrderBy(e => e.Name)
+                                        .Include(e => e.Image)
                                         .AsNoTracking()
                                         .ToListAsync();
             }

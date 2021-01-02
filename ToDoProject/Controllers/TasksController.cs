@@ -22,7 +22,7 @@ namespace ToDoProject.Controllers
         }
 
         [Route("tasks")]
-        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
+     //   [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
         public async Task<IActionResult> Index(string searchString, int? page)
         {
             int pageSize = 3;

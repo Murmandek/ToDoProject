@@ -7,11 +7,11 @@ namespace ToDoProject.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter task name")]
         [Display(Name = "Task name")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter task description")]
         [Display(Name = "Task description")]
         public string Description { get; set; }
             
