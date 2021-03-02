@@ -8,19 +8,22 @@ namespace ToDoProject.Models
     {
         public int Id { get; set; }
 
-        [Required (ErrorMessage = "Please enter employee name")]
-        [Display(Name = "Employee name")]
+        [Required (ErrorMessage = "NameRequired")] 
+        [Display(Name = "Name")] 
         public string Name { get; set; }
 
-        [Required (ErrorMessage = "Please enter employee age")]
-        [Range(1, 130)]
+        [Required (ErrorMessage = "AgeRequired")] 
+        [Range(1, 130, ErrorMessage = "AgeRange")] 
         [RegularExpression(@"^[0-9]*$")]
+        [Display(Name = "Age")] 
         public int Age { get; set; }
 
-        [Required (ErrorMessage = "Please enter employee address")]
+        [Required (ErrorMessage = "AddressRequired")] 
+        [Display(Name = "Address")] 
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "Please enter employee position")]
+        [Required(ErrorMessage = "PositionRequired")] 
+        [Display(Name = "Position")] 
         public string Position { get; set; }
 
         public List<EmployeeTask> EmployeeTasks { get; set; }

@@ -1,8 +1,11 @@
-﻿@using ToDoProject.Models.ViewModels
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ToDoProject.Models.ViewModels
+
+@inject IViewLocalizer Localizer
 @model EmployeeViewModel
 
 @{
-    ViewData["Title"] = "List of Employees";
+    ViewData["Title"] = @Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,7 +15,6 @@
     }
 
     .edge {
-
         width: 40px;
         height: 40px;
         border-radius: 50%; /*25px*/
@@ -20,21 +22,18 @@
     }
 </style>
 
-
-<h2>@ViewData["Title"]</h2>
 <p>
-    <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Add employee</a> 
+    <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">@Localizer["Add"]</a>
 </p>
 
 <form asp-action="Index" method="get">
     <div class="form-row">
-
         <div class="col">
-            <input type="text" asp-for="SearchString" class="form-control" placeholder="Search by name, position" />
+            <input type="text" asp-for="SearchString" class="form-control" placeholder="@Localizer["Placeholder"]" />
         </div>
         <div class="col">
-            <input type="submit" value="Search" class="btn btn-outline-success my-2 my-sm-0" />  
-            <input type="submit" asp-action="ClearIndex" value="Back to Full List" class="btn btn-outline-secondary" />
+            <input type="submit" value="@Localizer["Search"]" class="btn btn-outline-success my-2 my-sm-0" />
+            <input type="submit" asp-action="ClearIndex" value="@Localizer["Full List"]" class="btn btn-outline-secondary" />
         </div>
     </div>
     <p></p>
@@ -42,9 +41,9 @@
 
 <table class="table">
     <tr>
-        <th>Employee</th>
-        <th>Position</th>
-        <th>Actions</th>
+        <th>@Localizer["Employee"]</th>
+        <th>@Localizer["Position"]</th>
+        <th>@Localizer["Actions"]</th>
     </tr>
 
     @foreach (var item in Model.Employees)
@@ -60,8 +59,8 @@
             </td>
             <td><a>@item.Position</a></td>
             <td>
-                <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary"> Edit </a>
-                <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary"> @Localizer["Edit"] </a>
+                <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@Localizer["Delete"]</a>
             </td>
         </tr>
     }
@@ -73,7 +72,7 @@
         {
             <li class="page-item">
                 <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber - 1)" class="page-link">
-                    Previous
+                    @Localizer["Previous"]
                 </a>
             </li>
             <li class="page-item">
@@ -96,7 +95,7 @@
             </li>
             <li class="page-item">
                 <a asp-action="Index" asp-route-page="@(Model.PaginationViewModel.PageNumber + 1)" class="page-link">
-                    Next
+                    @Localizer["Next"]
                 </a>
             </li>
         }

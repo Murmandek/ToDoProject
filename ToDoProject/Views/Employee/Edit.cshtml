@@ -1,6 +1,8 @@
-﻿@model ToDoProject.Models.Employee
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model ToDoProject.Models.Employee
 @{
-    ViewData["Title"] = "Edit employee";
+    ViewData["Title"] = @Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewData["Title"]</h2>
@@ -42,17 +44,16 @@
         </div>
         <input type="hidden" asp-for="Image.EmployeeId" />
         <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Back to main menu</a>
+    <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">@Localizer["Back"]</a>
 </div>
 
 @section Scripts{
-
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

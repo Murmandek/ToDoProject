@@ -1,7 +1,9 @@
-﻿@model ToDoProject.Models.User
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model ToDoProject.Models.User
 
 @{
-    ViewData["Title"] = "A new user";
+    ViewData["Title"] = @Localizer["Title"];
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -12,7 +14,7 @@
         <div class="validation" asp-validation-summary="All"></div>
         <div class="form-group">
             <label asp-for="Login"></label>
-            <input asp-for="Login" class="form-control form-control-sm" placeholder="name@example.com"/> 
+            <input asp-for="Login" class="form-control form-control-sm" placeholder="name@example.com" />
             <span asp-validation-for="Login"></span>
         </div>
         <div class="form-group">
@@ -22,11 +24,11 @@
             <span asp-validation-for="Password"></span>
         </div>
         <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
         </div>
     </div>
     <div>
-        <button type="button" class="btn btn-secondary" onclick=' location.href="/Account/Index"'>Back to main page</button>
+        <button type="button" class="btn btn-secondary" onclick=' location.href="/Account/Index"'>@Localizer["Back"]</button>
     </div>
 </form>
 

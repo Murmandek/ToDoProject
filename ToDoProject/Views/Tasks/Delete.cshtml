@@ -1,10 +1,13 @@
-﻿@model ToDoProject.Models.Task
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model ToDoProject.Models.Task
 @{
-    ViewData["Title"] = "Delete task";
+    ViewData["Title"] = @Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>@ViewBag.Title</h2>
 
+<h2>@ViewBag.Title</h2>
 
 <form>
     <div>
@@ -26,11 +29,11 @@
 <div>
     <form asp-controller="Tasks" asp-action="Delete" method="post">
         <div class="form-group">
-            <input type="submit" class="btn btn-danger" value="Delete" />
+            <input type="submit" class="btn btn-danger" value="@Localizer["Delete"]" />
         </div>
     </form>
 </div>
 
 <div>
-    <a asp-controller="Tasks" asp-action="Index" class="btn btn-secondary">Back to main menu</a>
+    <a asp-controller="Tasks" asp-action="Index" class="btn btn-secondary">@Localizer["Back"]</a>
 </div>

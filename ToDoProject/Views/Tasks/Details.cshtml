@@ -1,6 +1,9 @@
-﻿@model ToDoProject.Models.Task
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model ToDoProject.Models.Task
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Localizer["Details"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewData["Title"]</h2>
@@ -21,5 +24,5 @@
 </form>
 
 <div>
-    <a asp-controller="Tasks" asp-action="Index" class="btn btn-primary">Back to main page</a>
+    <a asp-controller="Tasks" asp-action="Index" class="btn btn-primary">@Localizer["Back"]</a>
 </div>

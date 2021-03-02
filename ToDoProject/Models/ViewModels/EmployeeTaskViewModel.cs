@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace ToDoProject.Models
+namespace ToDoProject.Models.ViewModels
 {
     public class EmployeeTaskViewModel
     {
@@ -11,10 +11,10 @@ namespace ToDoProject.Models
         public int TaskSelectedValue { get; set; }
         public virtual Task Task { get; set; }
 
-        [DisplayName("Employee")]
+        [Display(Name = "Employee")]
         public virtual ICollection<Employee> Employees { get; set; }
 
-        [DisplayName("Task")]
+        [Display(Name = "Task")]
         public virtual ICollection<Task> Tasks { get; set; }
     }
 }

@@ -2,16 +2,16 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ToDoProject.Models
+namespace ToDoProject.Models.ViewModels
 {
     public class CreateTaskViewModel
     {
-        [Required(ErrorMessage = "Please enter task name")]
-        [Display(Name = "Task name")]
+        [Required(ErrorMessage = "NameRequired")] 
+        [Display(Name = "Name")] 
         public string TaskName { get; set; }
 
-        [Required(ErrorMessage = "Please enter task description")]
-        [Display(Name = "Task description")]
+        [Required(ErrorMessage = "DescriptionRequired")] 
+        [Display(Name = "Description")] 
         public string TaskDescription { get; set; }
 
         public int SelectedValue { get; set; }

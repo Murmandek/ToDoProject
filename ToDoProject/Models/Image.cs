@@ -7,10 +7,11 @@ namespace ToDoProject.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [Display(Name = "Image name")]
+        [Required(ErrorMessage = "ImageRequired")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Avatar")]
         public byte[] Avatar { get; set; }
 
         [Required]

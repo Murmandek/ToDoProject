@@ -1,7 +1,10 @@
-﻿@model ToDoProject.Models.CreateTaskViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model ToDoProject.Models.ViewModels.CreateTaskViewModel
 
 @{
-    ViewData["Title"] = "Add a new task";
+    ViewData["Title"] = @Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewData["Title"]</h2>
@@ -26,13 +29,13 @@
         </div>
         <p></p>
         <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-controller="Tasks" asp-action="Index" class="btn btn-secondary">Back to main menu</a>
+    <a asp-controller="Tasks" asp-action="Index" class="btn btn-secondary">@Localizer["Back"]</a>
 </div>
 
 @section Scripts{

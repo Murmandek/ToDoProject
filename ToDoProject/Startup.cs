@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using ToDoProject.Data.ORM;
 using DbUp;
 using System.Reflection;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace ToDoProject
 {
@@ -26,6 +28,8 @@ namespace ToDoProject
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -62,13 +66,17 @@ namespace ToDoProject
         
             var result = upgrader.PerformUpgrade();
 
+            
+
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddControllers();
-            services.AddControllersWithViews();
+            //services.AddControllers();
+            services.AddControllersWithViews()  
+                     .AddDataAnnotationsLocalization()
+                     .AddViewLocalization();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -83,7 +91,22 @@ namespace ToDoProject
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("en-US"),
+                new CultureInfo("ru"),
+                new CultureInfo("ru-RU")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+            //app.UseRequestLocalization();
+
+            app.UseHttpsRedirection();  
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -94,7 +117,7 @@ namespace ToDoProject
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                //endpoints.MapControllers();
                 
                 endpoints.MapControllerRoute(
                     name: "default",

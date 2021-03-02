@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using ToDoProject.Data.ORM;
 using ToDoProject.Models;
 using ToDoProject.Models.ViewModels;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
+
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace ToDoProject.Controllers
 {
@@ -44,6 +49,19 @@ namespace ToDoProject.Controllers
         {
             string searchString = "";
             return RedirectToAction("Index", "Employee", searchString);
+        }
+
+        
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
         }
 
         [Route("employees/info/{id}")]

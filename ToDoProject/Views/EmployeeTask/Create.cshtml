@@ -1,6 +1,9 @@
-﻿@model ToDoProject.Models.EmployeeTaskViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model ToDoProject.Models.ViewModels.EmployeeTaskViewModel
 @{
-    ViewData["Title"] = "Add task to employee";
+    ViewData["Title"] = @Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -21,13 +24,12 @@
         <p></p>
         <div class="action">
             <button class="btn btn-primary" type="submit">
-                Create
-                @*<span>Save</span>*@
+                @Localizer["Create"]
             </button>
         </div>
         <p></p>
         <div>
-            <a asp-controller="EmployeeTask" asp-action="Index" class="btn btn-secondary">Back to main menu</a>
+            <a asp-controller="EmployeeTask" asp-action="Index" class="btn btn-secondary">@Localizer["Back"]</a>
         </div>
     }
 </div>
