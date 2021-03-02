@@ -11,7 +11,11 @@ namespace ToDoProject.Controllers
     public class AccountController : Controller
     {
         private readonly IUserRepository _repo;
-
+        
+        /// <summary>
+        /// Some comment 
+        /// </summary>
+        /// <param name="context"></param>
         public AccountController(IUserRepository context)
         {
             _repo = context;
